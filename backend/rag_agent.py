@@ -12,10 +12,6 @@ Features:
 """
 
 import os
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -27,6 +23,11 @@ try:
 except:
     # Running locally or secrets not available
     load_dotenv()
+
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain.chains.retrieval_qa.base import RetrievalQA
+from langchain_core.prompts import PromptTemplate
 
 
 class DataDictionaryAgent:

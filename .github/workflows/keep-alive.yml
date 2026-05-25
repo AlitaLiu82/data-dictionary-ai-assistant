@@ -12,7 +12,13 @@ jobs:
       - name: Ping Streamlit App
         run: |
           echo "Pinging Streamlit app..."
-          curl -L -I https://data-dictionary-ai-assistant-ih4u7r9stgzjyrkyliwtxm.streamlit.app/
-          sleep 5
-          curl -L https://data-dictionary-ai-assistant-ih4u7r9stgzjyrkyliwtxm.streamlit.app/ > /dev/null 2>&1
-          echo "App pinged successfully at $(date)"
+          # First request - wake up the app
+          curl -L -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://data-dictionary-ai-assistant-ih4u7r9stgzjyrkyliwtxm.streamlit.app/ || true
+          
+          # Wait for app to fully start
+          sleep 10
+          
+          # Second request - ensure it's warm
+          curl -L -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://data-dictionary-ai-assistant-ih4u7r9stgzjyrkyliwtxm.streamlit.app/ || true
+          
+          echo "✅ App pinged successfully at $(date)"
